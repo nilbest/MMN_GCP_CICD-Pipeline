@@ -1,0 +1,49 @@
+steps:
+  # 1. Docker-Image bauen
+  - id: "Docker Build"
+        # TODO: Fügen Sie die notwendigen Argumente für den Docker-Build hinzu
+        # Hinweise:
+        # - Verwenden Sie das 'build' Kommando
+        # - Taggen Sie das Image mit: 'us-central1-docker.pkg.dev/$PROJECT_ID/[Artifact Registry Repository]/[Image Name]:$COMMIT_SHA'
+        # - Der Build-Context ist im './flask-app' Verzeichnis
+        # 
+        # Ihre Lösung hier:
+
+  # 2. Docker-Image in Google Container Registry pushen
+  - id: "Docker Push"
+        # TODO: Fügen Sie die notwendigen Argumente für den Docker-Push hinzu
+        # Hinweise:
+        # - Verwenden Sie das 'push' Kommando
+        # - Pushen Sie das gleiche Image-Tag wie in Schritt 1
+        #
+        # Ihre Lösung hier:
+
+  # 3. Deployment auf Cloud Run
+  - id: "Cloud Run Deployment"
+        # TODO: Fügen Sie die notwendigen Argumente für das Cloud Run Deployment hinzu
+        # Hinweise:
+        # - Verwenden Sie 'run deploy' als Basis-Kommando
+        # - Service-Name: 'transcoder-app'
+        # - Image: das gleiche wie in den vorherigen Schritten
+        # - Region: $_REGION Variable verwenden
+        # - Platform: 'managed'
+        # - Unauthenticated access erlauben
+        # - Umgebungsvariablen setzen: BUCKET_NAME, PROJECT_ID, REGION
+        #
+        # Ihre Lösung hier:
+
+# TODO: Konfigurieren Sie die Build-Optionen
+options:
+  # Hinweis: Setzen Sie das Logging auf 'CLOUD_LOGGING_ONLY'
+
+# TODO: Definieren Sie die Substitution-Variablen für die Umgebungsvariablen Region, Bucket-Name und Artifact Registry Repository
+substitutions:
+  # Hinweise:
+  # - Region: 'us-central1'
+  # - Bucket Name: 'IHR-BUCKET-NAME'
+  # - Artifact Registry Repository: 'transcoder-repo'
+  #
+  # Ihre Lösung hier:
+
+
+# TODO: Setzen Sie ein Timeout von 10 Minuten für den gesamten Build
