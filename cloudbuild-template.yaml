@@ -6,8 +6,14 @@ steps:
         # - Verwenden Sie das 'build' Kommando
         # - Taggen Sie das Image mit: 'us-central1-docker.pkg.dev/$PROJECT_ID/[Artifact Registry Repository]/[Image Name]:$COMMIT_SHA'
         # - Der Build-Context ist im './flask-app' Verzeichnis
-        # 
+        #
         # Ihre Lösung hier:
+    name: "gcr.io/cloud-builders/docker"
+    args:
+      - "build"
+      - "-t"
+      - "us-central1-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_REGISTRY_REPOSITORY/transcoder-app:$COMMIT_SHA"
+      - "./flask-app"
 
   # 2. Docker-Image in Google Container Registry pushen
   - id: "Docker Push"
@@ -17,6 +23,10 @@ steps:
         # - Pushen Sie das gleiche Image-Tag wie in Schritt 1
         #
         # Ihre Lösung hier:
+    name: "gcr.io/cloud-builders/docker"
+    args:
+      - "push"
+      - "us-central1-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_REGISTRY_REPOSITORY/transcoder-app:$COMMIT_SHA"
 
   # 3. Deployment auf Cloud Run
   - id: "Cloud Run Deployment"
@@ -31,10 +41,25 @@ steps:
         # - Umgebungsvariablen setzen: BUCKET_NAME, PROJECT_ID, REGION
         #
         # Ihre Lösung hier:
+    name: "gcr.io/cloud-builders/gcloud"
+    args:
+      - "run"
+      - "deploy"
+      - "transcoder-app"
+      - "--image"
+      - "us-central1-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_REGISTRY_REPOSITORY/transcoder-app:$COMMIT_SHA"
+      - "--region"
+      - "$_REGION"
+      - "--platform"
+      - "managed"
+      - "--allow-unauthenticated"
+      - "--set-env-vars"
+      - "BUCKET_NAME=$_BUCKET_NAME,PROJECT_ID=$PROJECT_ID,REGION=$_REGION"
 
 # TODO: Konfigurieren Sie die Build-Optionen
 options:
   # Hinweis: Setzen Sie das Logging auf 'CLOUD_LOGGING_ONLY'
+  logging: "CLOUD_LOGGING_ONLY"
 
 # TODO: Definieren Sie die Substitution-Variablen für die Umgebungsvariablen Region, Bucket-Name und Artifact Registry Repository
 substitutions:
@@ -44,6 +69,9 @@ substitutions:
   # - Artifact Registry Repository: 'transcoder-repo'
   #
   # Ihre Lösung hier:
-
+  _REGION: "us-central1"
+  _BUCKET_NAME: "mmn-project-storage"
+  _ARTIFACT_REGISTRY_REPOSITORY: "transcoder-repo"
 
 # TODO: Setzen Sie ein Timeout von 10 Minuten für den gesamten Build
+timeout: "600s"
