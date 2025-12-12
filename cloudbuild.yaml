@@ -69,9 +69,9 @@ substitutions:
   # - Artifact Registry Repository: 'transcoder-repo'
   #
   # Ihre Lösung hier:
-  _REGION: "us-central1"
-  _BUCKET_NAME: "mmn-project-storage"
-  _ARTIFACT_REGISTRY_REPOSITORY: "transcoder-repo"
+  REGION: "us-central1"
+  BUCKET_NAME: "mmn-project-storage"
+  ARTIFACT_REGISTRY_REPOSITORY: "transcoder-repo"
 
 # TODO: Setzen Sie ein Timeout von 10 Minuten für den gesamten Build
 timeout: "600s"
